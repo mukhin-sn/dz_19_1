@@ -2,14 +2,16 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs, urlparse
 
 # Для начала определим настройки запуска
-hostName = "localhost" # Адрес для доступа по сети
-serverPort = 8080 # Порт для доступа по сети
+hostName = "localhost"  # Адрес для доступа по сети
+serverPort = 8080  # Порт для доступа по сети
+
 
 class MyServer(BaseHTTPRequestHandler):
     """ 
         Специальный класс, который отвечает за 
         обработку входящих запросов от клиентов
     """
+
     def __get_html_content(self):
         with open("index.html", "r", encoding="utf-8") as file:
             self.file_data = file.read()
@@ -21,12 +23,14 @@ class MyServer(BaseHTTPRequestHandler):
         page_content = self.__get_html_content()
         print(query_components)
         # print(page_content)
-        self.send_response(200) # Отправка кода ответа
-        self.send_header("Content-type", "text/html") # Отправка типа данных, который будет передаваться
-        self.end_headers() # Завершение формирования заголовков ответа
-        self.wfile.write(bytes(page_content, "utf-8")) # Тело ответа
+        self.send_response(200)  # Отправка кода ответа
+        self.send_header("Content-type", "text/html")  # Отправка типа данных, который будет передаваться
+        self.end_headers()  # Завершение формирования заголовков ответа
+        self.wfile.write(bytes(page_content, "utf-8"))  # Тело ответа
+        return page_content
 
-if __name__ == "__main__":        
+
+if __name__ == "__main__":
     # Инициализация веб-сервера, который будет по заданным параметрам в сети 
     # принимать запросы и отправлять их на обработку специальному классу, который был описан выше
     webServer = HTTPServer((hostName, serverPort), MyServer)
